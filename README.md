@@ -58,7 +58,7 @@ FlagsEnum products > Instance methods:
 - toString():String
 
 Related utilities:
-- com.siteblade.util.JSON.stringify(value:*, options:* = undefined):String &dash; This will convert the enum to a Number.
+- com.siteblade.util.JSON.stringify(value:\*, options:\* = undefined):String &dash; This will convert the enum to a Number.
 
 ## Integer types
 
