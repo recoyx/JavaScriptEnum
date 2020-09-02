@@ -1,0 +1,18 @@
+{
+  "name": "com.siteblade.util",
+  "version": "1.1.8",
+  "description": "Proper enums and other utilities for JavaScript.",
+  "author": "Hydroper <HydroperHH@gmail.com>",
+  "homepage": "https://github.com/siteblade/util#README",
+  "repository": "https://github.com/siteblade/util",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}
