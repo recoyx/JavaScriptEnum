@@ -28,6 +28,22 @@ JSON.stringify = function(value, options = undefined) {
     }
 };
 
+export class StringExtension {
+    static apply(str, ...rest) {
+        while (rest[0] instanceof Array) rest = rest[0];
+        var variables = undefined;
+        if (rest.length == 1 && !(rest[0] instanceof Array)) variables = rest[0];
+        return str.replace(/\$([a-z0-9]+|\$|\d+)/, (_, argument) => {
+            if (argument == '$') return '$';
+            if (!variables) {
+                var i = Number(argument);
+                return i <= rest.length ? rest[i - 1] : 'undefined';
+            }
+            else return variables[argument];
+        });
+    }
+}
+
 /**
  * Creates an enum class like ShockScript enums.
  *
