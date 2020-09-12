@@ -33,7 +33,7 @@ export class StringExtension {
         while (rest[0] instanceof Array) rest = rest[0];
         var variables = undefined;
         if (rest.length == 1 && !(rest[0] instanceof Array)) variables = rest[0];
-        return str.replace(/\$([a-z0-9]+|\$|\d+)/, (_, argument) => {
+        return str.replace(/\$([a-zA-Z0-9]+|\$|\d+)/, (_, argument) => {
             if (argument == '$') return '$';
             if (!variables) {
                 var i = Number(argument);
