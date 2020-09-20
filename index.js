@@ -6,24 +6,25 @@ JSON.parse = esJSON.parse;
 
 /** */
 JSON.stringify = function(value, options = undefined) {
-    if (typeof value == 'string'
-        || typeof value == 'number'
-        || typeof value == 'boolean'
-        || !value)
-        return esJSON.stringify(value);
+    if (typeof value == 'string' || typeof value == 'number' || typeof value == 'boolean' || !value) return esJSON.stringify(value);
+
     else if (value instanceof Array) {
         let r = value.map(el => JSON.stringify(el));
         return `[${r.join(',')}]`;
     }
-    else if (value.constructor !== Object)
-        return typeof value.number == 'number' ? String(Number(value.number)) : JSON.stringify(value.toString());
+    else if (value instanceof Int || value instanceof UInt || value instanceof Long || value instanceof ULong) return String(value.valueOf());
+
+    else if (value.constructor !== Object) return typeof value.number == 'number' ? String(Number(value.number)) : JSON.stringify(value.toString());
+
     else {
         let props = [];
-        for (let name in value)
-            props.push(`${esJSON.stringify(name)}:${JSON.stringify(value[name])}`);
+
+        for (let name in value) props.push(`${esJSON.stringify(name)}:${JSON.stringify(value[name])}`);
+
         let r = `{${props.join(',')}}`;
-        if (typeof options == 'object')
-            r = esJSON.stringify(esJSON.parse(r), options);
+
+        if (typeof options == 'object') r = esJSON.stringify(esJSON.parse(r), options);
+
         return r;
     }
 };
@@ -261,23 +262,23 @@ function transformConstantName(name) {
 }
 
 /**
- * @description 64-bit signed integer data type.
+ * @description 32-bit signed integer data type.
  * @constructor
  * @param {*} value
  */
 export function Int(value = undefined) {
-    if (!this)
-        return new Int(value);
-    if (value instanceof Int)
-        value = value.valueOf();
-    this._value = Int.filterNumber(BigInt(value));
+    if (!this) return new Int(value);
+
+    if (value instanceof Int) value = value.valueOf();
+
+    this._value = Int.filterNumber(Number(value));
 }
 
 /** */
-Int.MIN_VALUE = -0x8000000000000000n;
+Int.MIN_VALUE = -0x80000000;
 
 /**  */
-Int.MAX_VALUE = 0x7fffffffffffffffn;
+Int.MAX_VALUE = 0x7fffffff;
 
 Int.filterNumber = function(value) {
     return value < Int.MIN_VALUE ? Int.MIN_VALUE : value > Int.MAX_VALUE ? Int.MAX_VALUE : value;
@@ -340,7 +341,7 @@ Int.prototype.pow = function(exp) {
 };
 
 /**
- * @return {BigInt}
+ * @return {Number}
  */
 Int.prototype.valueOf = function() {
     return this._value;
@@ -354,94 +355,280 @@ Int.prototype.toString = function(radix = undefined) {
 };
 
 /**
- * @description 64-bit unsigned Integer data type.
+ * @description 32-bit unsigned integer data type.
  * @constructor
  * @param {*} value
  */
-export function UnsignedInt(value = undefined) {
-    if (!this)
-        return new UnsignedInt(value);
-    if (value instanceof UnsignedInt)
-        value = value.valueOf();
-    this._value = UnsignedInt.filterNumber(BigInt(value));
+export function UInt(value = undefined) {
+    if (!this) return new UInt(value);
+
+    if (value instanceof UInt) value = value.valueOf();
+
+    this._value = UInt.filterNumber(Number(value));
 }
 
 /** */
-UnsignedInt.MIN_VALUE = 0;
+UInt.MIN_VALUE = 0;
 
 /**  */
-UnsignedInt.MAX_VALUE = 0x7fffffffffffffffn;
+UInt.MAX_VALUE = 0xffffffff;
 
-UnsignedInt.filterNumber = function(value) {
-    return value < UnsignedInt.MIN_VALUE ? UnsignedInt.MIN_VALUE : value > UnsignedInt.MAX_VALUE ? UnsignedInt.MAX_VALUE : value;
+UInt.filterNumber = function(value) {
+    return value < UInt.MIN_VALUE ? UInt.MIN_VALUE : value > UInt.MAX_VALUE ? UInt.MAX_VALUE : value;
 };
 
 /**
- * @param {UnsignedInt} value 
+ * @param {UInt} value 
  * @return {Boolean}
  */
-UnsignedInt.prototype.equals = function(value) {
-    return this._value == UnsignedInt(value)._value;
+UInt.prototype.equals = function(value) {
+    return this._value == UInt(value)._value;
 };
 
 /**
- * @param {UnsignedInt} value 
- * @return {UnsignedInt}
+ * @param {UInt} value 
+ * @return {UInt}
  */
-UnsignedInt.prototype.add = function(value) {
-    return UnsignedInt(UnsignedInt.filterNumber(this._value + UnsignedInt(value)._value));
+UInt.prototype.add = function(value) {
+    return UInt(UInt.filterNumber(this._value + UInt(value)._value));
 };
 
 /**
- * @param {UnsignedInt} value 
- * @return {UnsignedInt}
+ * @param {UInt} value 
+ * @return {UInt}
  */
-UnsignedInt.prototype.subtract = function(value) {
-    return UnsignedInt(UnsignedInt.filterNumber(this._value - UnsignedInt(value)._value));
+UInt.prototype.subtract = function(value) {
+    return UInt(UInt.filterNumber(this._value - UInt(value)._value));
 };
 
 /**
- * @param {UnsignedInt} value 
- * @return {UnsignedInt}
+ * @param {UInt} value 
+ * @return {UInt}
  */
-UnsignedInt.prototype.multiply = function(value) {
-    return UnsignedInt(UnsignedInt.filterNumber(this._value * UnsignedInt(value)._value));
+UInt.prototype.multiply = function(value) {
+    return UInt(UInt.filterNumber(this._value * UInt(value)._value));
 };
 
 /**
- * @param {UnsignedInt} value 
- * @return {UnsignedInt}
+ * @param {UInt} value 
+ * @return {UInt}
  */
-UnsignedInt.prototype.divide = function(value) {
-    return UnsignedInt(UnsignedInt.filterNumber(this._value / UnsignedInt(value)._value));
+UInt.prototype.divide = function(value) {
+    return UInt(UInt.filterNumber(this._value / UInt(value)._value));
 };
 
 /**
- * @param {UnsignedInt} value 
- * @return {UnsignedInt}
+ * @param {UInt} value 
+ * @return {UInt}
  */
-UnsignedInt.prototype.remainder = function(value) {
-    return UnsignedInt(UnsignedInt.filterNumber(this._value % UnsignedInt(value)._value));
+UInt.prototype.remainder = function(value) {
+    return UInt(UInt.filterNumber(this._value % UInt(value)._value));
 };
 
 /**
- * @param {UnsignedInt} exp
- * @return {UnsignedInt}
+ * @param {UInt} exp
+ * @return {UInt}
  */
-UnsignedInt.prototype.pow = function(exp) {
-    return UnsignedInt(UnsignedInt.filterNumber(this._value ** UnsignedInt(exp)._value));
+UInt.prototype.pow = function(exp) {
+    return UInt(UInt.filterNumber(this._value ** UInt(exp)._value));
 };
 
 /**
- * @return {BigInt}
+ * @return {Number}
  */
-UnsignedInt.prototype.valueOf = function() {
+UInt.prototype.valueOf = function() {
     return this._value;
 };
 
 /**
  * @param {Number} radix 
  */
-UnsignedInt.prototype.toString = function(radix = undefined) {
+UInt.prototype.toString = function(radix = undefined) {
+    return this._value.toString(radix);
+};
+
+/**
+ * @description 64-bit signed integer data type.
+ * @constructor
+ * @param {*} value
+ */
+export function Long(value = undefined) {
+    if (!this) return new Long(value);
+
+    if (value instanceof Long) value = value.valueOf();
+
+    this._value = Long.filterNumber(BigLong(value));
+}
+
+/** */
+Long.MIN_VALUE = -0x8000000000000000n;
+
+/**  */
+Long.MAX_VALUE = 0x7fffffffffffffffn;
+
+Long.filterNumber = function(value) {
+    return value < Long.MIN_VALUE ? Long.MIN_VALUE : value > Long.MAX_VALUE ? Long.MAX_VALUE : value;
+};
+
+/**
+ * @param {Long} value 
+ * @return {Boolean}
+ */
+Long.prototype.equals = function(value) {
+    return this._value == Long(value).valueOf();
+};
+
+/**
+ * @param {Long} value 
+ * @return {Long}
+ */
+Long.prototype.add = function(value) {
+    return Long(Long.filterNumber(this._value + Long(value).valueOf()));
+};
+
+/**
+ * @param {Long} value 
+ * @return {Long}
+ */
+Long.prototype.subtract = function(value) {
+    return Long(Long.filterNumber(this._value - Long(value).valueOf()));
+};
+
+/**
+ * @param {Long} value 
+ * @return {Long}
+ */
+Long.prototype.multiply = function(value) {
+    return Long(Long.filterNumber(this._value * Long(value).valueOf()));
+};
+
+/**
+ * @param {Long} value 
+ * @return {Long}
+ */
+Long.prototype.divide = function(value) {
+    return Long(Long.filterNumber(this._value / Long(value).valueOf()));
+};
+
+/**
+ * @param {Long} value 
+ * @return {Long}
+ */
+Long.prototype.remainder = function(value) {
+    return Long(Long.filterNumber(this._value % Long(value).valueOf()));
+};
+
+/**
+ * @param {Long} exp
+ * @return {Long}
+ */
+Long.prototype.pow = function(exp) {
+    return Long(Long.filterNumber(this._value ** Long(exp)._value));
+};
+
+/**
+ * @return {BigLong}
+ */
+Long.prototype.valueOf = function() {
+    return this._value;
+};
+
+/**
+ * @param {Number} radix 
+ */
+Long.prototype.toString = function(radix = undefined) {
+    return this._value.toString(radix);
+};
+
+/**
+ * @description 64-bit unsigned Longeger data type.
+ * @constructor
+ * @param {*} value
+ */
+export function ULong(value = undefined) {
+    if (!this)
+        return new ULong(value);
+    if (value instanceof ULong)
+        value = value.valueOf();
+    this._value = ULong.filterNumber(BigLong(value));
+}
+
+/** */
+ULong.MIN_VALUE = 0;
+
+/**  */
+ULong.MAX_VALUE = 0xffffffffffffffffn;
+
+ULong.filterNumber = function(value) {
+    return value < ULong.MIN_VALUE ? ULong.MIN_VALUE : value > ULong.MAX_VALUE ? ULong.MAX_VALUE : value;
+};
+
+/**
+ * @param {ULong} value 
+ * @return {Boolean}
+ */
+ULong.prototype.equals = function(value) {
+    return this._value == ULong(value)._value;
+};
+
+/**
+ * @param {ULong} value 
+ * @return {ULong}
+ */
+ULong.prototype.add = function(value) {
+    return ULong(ULong.filterNumber(this._value + ULong(value)._value));
+};
+
+/**
+ * @param {ULong} value 
+ * @return {ULong}
+ */
+ULong.prototype.subtract = function(value) {
+    return ULong(ULong.filterNumber(this._value - ULong(value)._value));
+};
+
+/**
+ * @param {ULong} value 
+ * @return {ULong}
+ */
+ULong.prototype.multiply = function(value) {
+    return ULong(ULong.filterNumber(this._value * ULong(value)._value));
+};
+
+/**
+ * @param {ULong} value 
+ * @return {ULong}
+ */
+ULong.prototype.divide = function(value) {
+    return ULong(ULong.filterNumber(this._value / ULong(value)._value));
+};
+
+/**
+ * @param {ULong} value 
+ * @return {ULong}
+ */
+ULong.prototype.remainder = function(value) {
+    return ULong(ULong.filterNumber(this._value % ULong(value)._value));
+};
+
+/**
+ * @param {ULong} exp
+ * @return {ULong}
+ */
+ULong.prototype.pow = function(exp) {
+    return ULong(ULong.filterNumber(this._value ** ULong(exp)._value));
+};
+
+/**
+ * @return {BigLong}
+ */
+ULong.prototype.valueOf = function() {
+    return this._value;
+};
+
+/**
+ * @param {Number} radix 
+ */
+ULong.prototype.toString = function(radix = undefined) {
     return this._value.toString(radix);
 };

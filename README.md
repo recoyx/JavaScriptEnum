@@ -62,7 +62,7 @@ Related utilities:
 
 ## Integer types
 
-Int and UnsignedInt are 64-bit integer data types used as BigInt.
+Int and UInt are 32-bit integer data types used as Number. Long and ULong are 64-bit integer data types used as BigInt.
 
 Instance methods:
 - equals(arg):Boolean
