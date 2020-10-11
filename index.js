@@ -29,7 +29,7 @@ JSON.stringify = function(value, options = undefined) {
     }
 };
 
-export class StringExtension {
+export class StringHelpers {
     static apply(str, ...rest) {
         while (rest[0] instanceof Array) rest = rest[0];
         var variables = undefined;
