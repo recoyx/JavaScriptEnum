@@ -45,7 +45,7 @@ export class StringExtension {
     }
 }
 
-export class LiveValue {
+export class LiveVar {
     _value;
     _listeners = [];
 
