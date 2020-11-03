@@ -1,13 +1,11 @@
-##### com.siteblade.util
+# JavaScriptEnum
 
-## Enums
-
-Defining enums:
+This package allows defining flexible enum classes.
 
 ```javascript
-import { Enum, FlagsEnum } from 'com.siteblade.util';
+import { Enum, FlagsEnum } from 'com.recoyxgroup.javascript.enum';
 
-// simple enums
+// regular enums
 
 const E = Enum('E', [
 	'FOO_CONST',
@@ -29,10 +27,8 @@ Applying enums:
 
 ```javascript
 class C {
-	_e;
-
+	_e = E(undefined);
 	get e() { return this._e }
-
 	set e(v) { this._e = E(v) }
 }
 
@@ -58,17 +54,4 @@ FlagsEnum products > Instance methods:
 - toString():String
 
 Related utilities:
-- com.siteblade.util.JSON.stringify(value:\*, options:\* = undefined):String &dash; This will convert the enum to a Number.
-
-## Integer types
-
-Int and UInt are 32-bit integer data types used as Number. Long and ULong are 64-bit integer data types used as BigInt.
-
-Instance methods:
-- equals(arg):Boolean
-- add(arg)
-- subtract(arg)
-- multiply(arg)
-- divide(arg)
-- remainder(arg)
-- valueOf():BigInt
+- com.recoyxgroup.javascript.enum.JSON.stringify(value:\*, options:\* = undefined):String &dash; This is a JSON.stringify() specialization that will convert any enum object to a Number.
