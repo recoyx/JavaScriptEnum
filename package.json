@@ -3,8 +3,8 @@
   "version": "1.0.1",
   "description": "Flexible enums in JavaScript.",
   "author": "Hydroper <HydroperHH@gmail.com>",
-  "homepage": "https://github.com/recoyx/JavaScriptEnum#README",
-  "repository": "https://github.com/recoyx/JavaScriptEnum",
+  "homepage": "https://gitlab.com/recoyx/JavaScriptEnum#README",
+  "repository": "https://gitlab.com/recoyx/JavaScriptEnum",
   "main": "library.js",
   "type": "module",
   "scripts": {
