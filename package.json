@@ -1,8 +1,8 @@
 {
   "name": "com.recoyxgroup.javascript.enum",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Flexible enums in JavaScript.",
-  "author": "Hydroper <HydroperHH@gmail.com>",
+  "author": "Klaider <HydroperHH@gmail.com>",
   "homepage": "https://github.com/recoyx/JavaScriptEnum#README",
   "repository": "https://github.com/recoyx/JavaScriptEnum",
   "main": "library.js",
